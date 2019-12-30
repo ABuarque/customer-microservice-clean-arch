@@ -8,7 +8,6 @@ import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.util.*
-import kotlin.collections.HashMap
 
 class JWTAuthServiceImpl  : AuthService {
 
@@ -36,11 +35,11 @@ class JWTAuthServiceImpl  : AuthService {
     }
 
     override fun isTokenValid(token: String): Boolean {
-        try {
+        return try {
             val signedJWT = SignedJWT.parse(token)
-            return signedJWT.verify(MACVerifier(INTERNAL_TOKEN))
+            signedJWT.verify(MACVerifier(INTERNAL_TOKEN))
         } catch (e: Exception) {
-            return false
+            false
         }
     }
 
@@ -49,7 +48,6 @@ class JWTAuthServiceImpl  : AuthService {
             val signedJWT = SignedJWT.parse(token)
             return signedJWT!!.jwtClaimsSet.claims.toMap()
         } catch (e: Exception) {
-            println(e)
             throw Exception("Failed to get claims")
         }
     }
