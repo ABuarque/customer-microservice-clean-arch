@@ -32,7 +32,7 @@ internal class JWTAuthServiceImplTest {
     fun success_on_create_token_from_customer_and_get_params_from_claims() {
         val createdToken = authService.getToken(customer)
         val claims = authService.toMap(createdToken)
-        assertEquals(claims["email"], customer.email)
-        assertEquals(claims["id"], customer.id)
+        assertEquals(claims.get()["email"], customer.email)
+        assertEquals(claims.get()["id"], customer.id)
     }
 }
