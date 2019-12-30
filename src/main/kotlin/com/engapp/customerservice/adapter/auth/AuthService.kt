@@ -1,6 +1,7 @@
 package com.engapp.customerservice.adapter.auth
 
 import com.engapp.customerservice.domain.Customer
+import java.util.*
 
 interface AuthService {
 
@@ -8,5 +9,5 @@ interface AuthService {
 
     fun isTokenValid(token: String): Boolean
 
-    fun toMap(token: String): Map<String, Any>
+    fun toMap(token: String): Optional<Map<String, Any>>
 }

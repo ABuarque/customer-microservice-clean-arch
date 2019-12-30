@@ -9,7 +9,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.util.*
 
-class JWTAuthServiceImpl  : AuthService {
+class JWTAuthServiceImpl : AuthService {
 
     private companion object {
         val INTERNAL_TOKEN = System.getenv("CUSTOMER_AUTH_TOKEN") ?: "9S8BKABS5VdddTSnsd0dm87dsnBB7%VH%gs740MJnb509J"
@@ -43,12 +43,12 @@ class JWTAuthServiceImpl  : AuthService {
         }
     }
 
-    override fun toMap(token: String): Map<String, Any> {
-        try {
+    override fun toMap(token: String): Optional<Map<String, Any>> {
+        return try {
             val signedJWT = SignedJWT.parse(token)
-            return signedJWT!!.jwtClaimsSet.claims.toMap()
+            Optional.of(signedJWT!!.jwtClaimsSet.claims.toMap())
         } catch (e: Exception) {
-            throw Exception("Failed to get claims")
+            Optional.empty()
         }
     }
 }
