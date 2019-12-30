@@ -1,5 +1,6 @@
 package com.engapp.customerservice.application.config
 
+import com.engapp.customerservice.adapter.auth.JWTAuthServiceImpl
 import com.engapp.customerservice.adapter.controller.CustomerController
 import com.engapp.customerservice.config.FakeConfigComponent
 import com.engapp.customerservice.usecase.CreateAccount
@@ -24,6 +25,6 @@ class Config {
 
     @Bean
     fun customerController(): CustomerController {
-        return CustomerController(createAccount(), loginWithEmail())
+        return CustomerController(createAccount(), loginWithEmail(), JWTAuthServiceImpl())
     }
 }

@@ -16,13 +16,11 @@ class CustomerResource(@Autowired private val customerController: CustomerContro
 
     @RequestMapping(method = [RequestMethod.POST])
     fun create(@RequestBody customer: CustomerWeb): ResponseEntity<Any> {
-        val created = customerController.create(customer)
-        return ResponseEntity(created, HttpStatus.CREATED)
+        return ResponseEntity(customerController.create(customer), HttpStatus.OK)
     }
 
     @RequestMapping("/login", method = [RequestMethod.POST])
     fun loginWithEmail(@RequestBody customer: CustomerWeb): ResponseEntity<Any> {
-        val found = customerController.login(customer)
-        return ResponseEntity(found, HttpStatus.OK)
+        return ResponseEntity(customerController.login(customer), HttpStatus.OK)
     }
 }
