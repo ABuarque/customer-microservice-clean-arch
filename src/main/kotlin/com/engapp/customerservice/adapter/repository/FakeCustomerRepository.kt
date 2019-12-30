@@ -23,4 +23,9 @@ class FakeCustomerRepository : CustomerRepository {
         }
         return Optional.empty()
     }
+
+    override fun update(customer: Customer): Customer {
+        db[customer.id] = customer
+        return customer
+    }
 }

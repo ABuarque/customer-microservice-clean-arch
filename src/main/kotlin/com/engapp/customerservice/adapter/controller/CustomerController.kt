@@ -1,11 +1,9 @@
 package com.engapp.customerservice.adapter.controller
 
 import com.engapp.customerservice.adapter.auth.AuthService
-import com.engapp.customerservice.adapter.controller.model.CustomerResponse
-import com.engapp.customerservice.adapter.controller.model.CustomerWeb
-import com.engapp.customerservice.adapter.controller.model.DefaultError
-import com.engapp.customerservice.adapter.controller.model.DefaultWebResponse
+import com.engapp.customerservice.adapter.controller.model.*
 import com.engapp.customerservice.domain.Customer
+import com.engapp.customerservice.usecase.ChangePassword
 import com.engapp.customerservice.usecase.CreateAccount
 import com.engapp.customerservice.usecase.LoginWithEmail
 import com.engapp.customerservice.usecase.exception.DefaultException
@@ -13,6 +11,7 @@ import com.engapp.customerservice.usecase.exception.ExceptionData
 
 class CustomerController(private val createAccount: CreateAccount,
                          private val loginWithEmail: LoginWithEmail,
+                         private val changePassword: ChangePassword,
                          private val authService: AuthService) {
 
     fun create(customerWeb: CustomerWeb): DefaultWebResponse {
@@ -28,6 +27,29 @@ class CustomerController(private val createAccount: CreateAccount,
     fun login(customerWeb: CustomerWeb): DefaultWebResponse {
         return try {
             loginWithEmail.login(customerWeb.email, customerWeb.password).toResponseModel()
+        } catch (e: DefaultException) {
+            e.data.toDefaultWebError()
+        } catch (e: Exception) {
+            e.toResponseModel()
+        }
+    }
+
+    fun changePassword(authToken: String, changePasswordPayload: ChangePasswordPayload): DefaultWebResponse {
+        if (!authService.isTokenValid(authToken))
+            return DefaultWebResponse(error = DefaultError("Problem in auth", 3, 200, "Invalid credentials"))
+
+        val claimsPackage = authService.toMap(authToken)
+
+        if (claimsPackage.isEmpty)
+            return DefaultWebResponse(error = DefaultError("Problem in auth", 4, 200, "Invalid auth data"))
+
+        val id = claimsPackage.get()["id"] as String
+        val email = claimsPackage.get()["email"] as String
+        val customer = Customer(id = id, email = email)
+
+        return try {
+            changePassword.change(customer, changePasswordPayload.currentPassword,
+                                            changePasswordPayload.newPassword).toResponseModel()
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {

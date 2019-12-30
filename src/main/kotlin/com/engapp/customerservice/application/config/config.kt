@@ -3,6 +3,7 @@ package com.engapp.customerservice.application.config
 import com.engapp.customerservice.adapter.auth.JWTAuthServiceImpl
 import com.engapp.customerservice.adapter.controller.CustomerController
 import com.engapp.customerservice.config.FakeConfigComponent
+import com.engapp.customerservice.usecase.ChangePassword
 import com.engapp.customerservice.usecase.CreateAccount
 import com.engapp.customerservice.usecase.LoginWithEmail
 import org.springframework.context.annotation.Bean
@@ -24,7 +25,12 @@ class Config {
     }
 
     @Bean
+    fun changePassword(): ChangePassword {
+        return configuration.changePassword()
+    }
+
+    @Bean
     fun customerController(): CustomerController {
-        return CustomerController(createAccount(), loginWithEmail(), JWTAuthServiceImpl())
+        return CustomerController(createAccount(), loginWithEmail(), changePassword(), JWTAuthServiceImpl())
     }
 }

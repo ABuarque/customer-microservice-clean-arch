@@ -8,4 +8,6 @@ interface CustomerRepository {
     fun create(customer: Customer): Customer
 
     fun findByEmail(email: String): Optional<Customer>
+
+    fun update(customer: Customer): Customer
 }

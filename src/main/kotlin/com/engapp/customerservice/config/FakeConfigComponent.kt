@@ -2,6 +2,7 @@ package com.engapp.customerservice.config
 
 import com.engapp.customerservice.adapter.passwordencryption.PasswordEncryptionService
 import com.engapp.customerservice.adapter.repository.FakeCustomerRepository
+import com.engapp.customerservice.usecase.ChangePassword
 import com.engapp.customerservice.usecase.CreateAccount
 import com.engapp.customerservice.usecase.LoginWithEmail
 
@@ -16,5 +17,9 @@ class FakeConfigComponent {
 
     fun login(): LoginWithEmail {
         return LoginWithEmail(fakeCustomerRepository, passwordEncryption)
+    }
+
+    fun changePassword(): ChangePassword {
+        return ChangePassword(fakeCustomerRepository, passwordEncryption)
     }
 }
