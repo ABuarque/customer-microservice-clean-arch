@@ -21,7 +21,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
-            DefaultWebResponse(error = DefaultError("Internal error", -1, 500, e.localizedMessage))
+            e.toResponseModel()
         }
     }
 
@@ -31,7 +31,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
-            DefaultWebResponse(error = DefaultError("Internal error", -1, 500, e.localizedMessage))
+            e.toResponseModel()
         }
     }
 
@@ -46,6 +46,10 @@ class CustomerController(private val createAccount: CreateAccount,
     private fun Customer.toResponseModel(): DefaultWebResponse {
         val token = authService.getToken(this)
         return DefaultWebResponse(data = CustomerResponse(id, email, name, token))
+    }
+
+    private fun Exception.toResponseModel(): DefaultWebResponse {
+        return DefaultWebResponse(error = DefaultError("Internal error", -1, 500, localizedMessage))
     }
 }
 
