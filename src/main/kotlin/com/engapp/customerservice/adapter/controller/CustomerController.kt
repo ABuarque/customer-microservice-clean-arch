@@ -43,9 +43,7 @@ class CustomerController(private val createAccount: CreateAccount,
         if (claimsPackage.isEmpty)
             return DefaultWebResponse(error = DefaultError("Problem in auth", 4, 200, "Invalid auth data"))
 
-        val id = claimsPackage.get()["id"] as String
-        val email = claimsPackage.get()["email"] as String
-        val customer = Customer(id = id, email = email)
+        val customer = claimsPackage.get().toCustomer()
 
         return try {
             changePassword.change(customer, changePasswordPayload.currentPassword,
@@ -55,6 +53,12 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: Exception) {
             e.toResponseModel()
         }
+    }
+
+    private fun Map<String, Any>.toCustomer(): Customer {
+        val id = this["id"] as String
+        val email = this["email"] as String
+        return Customer(id = id, email = email)
     }
 
     private fun ExceptionData.toDefaultWebError(): DefaultWebResponse {
