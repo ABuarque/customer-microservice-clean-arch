@@ -16,8 +16,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.mindrot:jbcrypt:0.3m")
-    implementation("com.nimbusds:nimbus-jose-jwt:5.8")
+    implementation("commons-codec:commons-codec:1.8") //Base64
+    implementation("org.mindrot:jbcrypt:0.3m") //Bcrypt
+    implementation("com.nimbusds:nimbus-jose-jwt:5.8") //jwt
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

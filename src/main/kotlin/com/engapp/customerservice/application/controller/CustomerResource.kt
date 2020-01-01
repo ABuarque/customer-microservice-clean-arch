@@ -27,4 +27,9 @@ class CustomerResource(@Autowired private val customerController: CustomerContro
                        @RequestBody changePasswordPayload: ChangePasswordPayload): ResponseEntity<Any> {
         return ResponseEntity(customerController.changePassword(token, changePasswordPayload), HttpStatus.OK)
     }
+
+    @RequestMapping("/forgot_password", method = [RequestMethod.POST])
+    fun requestPasswordRedefinitionLink(@RequestBody customer: CustomerWeb): ResponseEntity<Any> {
+        return ResponseEntity(customerController.requestPasswordRedefinitionLink(customer), HttpStatus.OK)
+    }
 }

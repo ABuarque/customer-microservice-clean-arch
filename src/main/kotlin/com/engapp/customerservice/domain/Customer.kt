@@ -8,4 +8,6 @@ data class Customer(val id: String = UUID.randomUUID().toString(),
                     var email: String = "",
 
                     @JsonIgnore
-                    var password: String = "")
+                    var password: String = "",
+
+                    var passwordRedefinitionCode: String? = null)

@@ -1,15 +1,18 @@
 package com.engapp.customerservice.config
 
+import com.engapp.customerservice.adapter.notification.NotificationServiceImpl
 import com.engapp.customerservice.adapter.passwordencryption.PasswordEncryptionService
 import com.engapp.customerservice.adapter.repository.FakeCustomerRepository
 import com.engapp.customerservice.usecase.ChangePassword
 import com.engapp.customerservice.usecase.CreateAccount
+import com.engapp.customerservice.usecase.ForgotPassword
 import com.engapp.customerservice.usecase.LoginWithEmail
 
 class FakeConfigComponent {
 
     private val fakeCustomerRepository = FakeCustomerRepository()
     private val passwordEncryption = PasswordEncryptionService()
+    private val notificationService = NotificationServiceImpl()
 
     fun create(): CreateAccount {
         return CreateAccount(fakeCustomerRepository, passwordEncryption)
@@ -21,5 +24,9 @@ class FakeConfigComponent {
 
     fun changePassword(): ChangePassword {
         return ChangePassword(fakeCustomerRepository, passwordEncryption)
+    }
+
+    fun forgotPassword(): ForgotPassword {
+        return ForgotPassword(fakeCustomerRepository, notificationService)
     }
 }
