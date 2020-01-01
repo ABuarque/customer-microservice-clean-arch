@@ -1,5 +1,6 @@
 package com.engapp.customerservice.usecase
 
+import com.engapp.customerservice.adapter.passwordencryption.PasswordEncryptionService
 import com.engapp.customerservice.domain.Customer
 import com.engapp.customerservice.usecase.exception.UserNotFound
 import com.engapp.customerservice.usecase.notification.NotificationService
@@ -8,7 +9,8 @@ import org.apache.commons.codec.binary.Base64;
 import java.util.*
 
 class ForgotPassword(private val customerRepository: CustomerRepository,
-                     private val notificationService: NotificationService) {
+                     private val notificationService: NotificationService,
+                     private val encryptionService: PasswordEncryptionService) {
 
     @Throws(UserNotFound::class)
     fun requestPasswordRedefinitionLink(email: String) {
@@ -34,8 +36,21 @@ class ForgotPassword(private val customerRepository: CustomerRepository,
         notificationService.sendTextEmail(customer.email, "Password redefinition", encryptedCode)
     }
 
-    fun redefineForgottenPassword(passwordRedefinitionToken: String, newPassword: String) {
+    @Throws(UserNotFound::class)
+    fun redefineForgottenPassword(passwordRedefinitionToken: String, newPassword: String): Customer {
+        val decodedPasswordRedefinitionCode = String(Base64.decodeBase64(passwordRedefinitionToken))
 
+        val customerPackage = customerRepository
+                                .findByPasswordRedefinitionToken(decodedPasswordRedefinitionCode)
+
+        if (customerPackage.isEmpty)
+            throw UserNotFound("Redefinition code has expire")
+
+        val customer = customerPackage.get()
+
+        customer.password = encryptionService.encrypt(newPassword)
+
+        return customerRepository.update(customer)
     }
 
 }

@@ -27,6 +27,6 @@ class FakeConfigComponent {
     }
 
     fun forgotPassword(): ForgotPassword {
-        return ForgotPassword(fakeCustomerRepository, notificationService)
+        return ForgotPassword(fakeCustomerRepository, notificationService, passwordEncryption)
     }
 }

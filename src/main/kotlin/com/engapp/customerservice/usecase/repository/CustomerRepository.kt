@@ -10,4 +10,6 @@ interface CustomerRepository {
     fun findByEmail(email: String): Optional<Customer>
 
     fun update(customer: Customer): Customer
+
+    fun findByPasswordRedefinitionToken(passwordRedefinitionToken: String): Optional<Customer>
 }

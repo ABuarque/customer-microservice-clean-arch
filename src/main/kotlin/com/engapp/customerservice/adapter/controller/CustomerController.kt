@@ -70,6 +70,17 @@ class CustomerController(private val createAccount: CreateAccount,
         }
     }
 
+    fun definePasswordByRedefinitionToken(customerWeb: CustomerWeb): DefaultWebResponse {
+        return try {
+            forgotPassword.redefineForgottenPassword(customerWeb.passwordRedefinitionToken,
+                                                                  customerWeb.newPassword).toResponseModel()
+        } catch (e: DefaultException) {
+            e.data.toDefaultWebError()
+        } catch (e: Exception) {
+            e.toResponseModel()
+        }
+    }
+
     private fun Map<String, Any>.toCustomer(): Customer {
         val id = this["id"] as String
         val email = this["email"] as String

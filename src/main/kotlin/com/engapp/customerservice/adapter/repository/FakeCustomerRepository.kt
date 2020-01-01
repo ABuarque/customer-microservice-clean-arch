@@ -28,4 +28,12 @@ class FakeCustomerRepository : CustomerRepository {
         db[customer.id] = customer
         return customer
     }
+
+    override fun findByPasswordRedefinitionToken(passwordRedefinitionToken: String): Optional<Customer> {
+        db.values.forEach {
+            if (it.passwordRedefinitionCode == passwordRedefinitionToken)
+                return Optional.of(it)
+        }
+        return Optional.empty()
+    }
 }
