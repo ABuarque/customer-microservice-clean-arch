@@ -49,8 +49,17 @@ class ForgotPassword(private val customerRepository: CustomerRepository,
         val customer = customerPackage.get()
 
         customer.password = encryptionService.encrypt(newPassword)
+        customer.passwordRedefinitionCode = null
 
-        return customerRepository.update(customer)
+        customerRepository.update(customer)
+
+        sendEmailToCustomerTellingPasswordHasChanged(customer)
+
+        return customer
+    }
+
+    private fun sendEmailToCustomerTellingPasswordHasChanged(customer: Customer) {
+        println(">> IMPLEMENTING")
     }
 
 }
