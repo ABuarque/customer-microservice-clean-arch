@@ -21,6 +21,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
@@ -31,6 +32,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
@@ -52,6 +54,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
@@ -65,6 +68,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
@@ -76,6 +80,7 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
