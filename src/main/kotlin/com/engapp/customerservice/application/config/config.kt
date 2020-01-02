@@ -38,12 +38,18 @@ class Config {
     }
 
     @Bean
+    fun refreshData(): RefreshData {
+        return configuration.refreshData()
+    }
+
+    @Bean
     fun customerController(): CustomerController {
         return CustomerController(createAccount(),
                                 loginWithEmail(),
                                 changePassword(),
                                 requestForgottenPasswordRedefinition(),
                                 redefineForgottenPassword(),
+                                refreshData(),
                                 JWTAuthServiceImpl())
     }
 }

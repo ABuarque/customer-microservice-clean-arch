@@ -37,4 +37,9 @@ class CustomerResource(@Autowired private val customerController: CustomerContro
     fun redefineForgottenPassword(@RequestBody customer: CustomerWeb): ResponseEntity<Any> {
         return ResponseEntity(customerController.definePasswordByRedefinitionToken(customer), HttpStatus.OK)
     }
+
+    @RequestMapping(method = [RequestMethod.GET])
+    fun refreshData(@RequestHeader("token") authToken: String): ResponseEntity<Any> {
+        return ResponseEntity(customerController.refreshData(authToken), HttpStatus.OK)
+    }
 }

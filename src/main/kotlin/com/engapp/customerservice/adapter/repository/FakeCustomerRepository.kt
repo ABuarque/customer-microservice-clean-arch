@@ -36,4 +36,11 @@ class FakeCustomerRepository : CustomerRepository {
         }
         return Optional.empty()
     }
+
+    override fun findById(id: String): Optional<Customer> {
+        val possibleCustomer = db[id]
+        if (possibleCustomer != null)
+            return Optional.of(possibleCustomer)
+        return Optional.empty()
+    }
 }

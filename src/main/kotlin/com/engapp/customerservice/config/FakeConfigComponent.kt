@@ -30,4 +30,8 @@ class FakeConfigComponent {
     fun redefineForgottenPassword(): RedefineForgottenPassword {
         return RedefineForgottenPassword(fakeCustomerRepository, passwordEncryption)
     }
+
+    fun refreshData(): RefreshData {
+        return RefreshData(fakeCustomerRepository)
+    }
 }

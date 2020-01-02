@@ -11,6 +11,8 @@ import java.util.*
  */
 interface CustomerRepository {
 
+    fun findById(id: String): Optional<Customer>
+
     fun create(customer: Customer): Customer
 
     fun findByEmail(email: String): Optional<Customer>

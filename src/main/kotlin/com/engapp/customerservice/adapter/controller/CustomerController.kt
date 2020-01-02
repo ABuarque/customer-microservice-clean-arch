@@ -12,6 +12,7 @@ class CustomerController(private val createAccount: CreateAccount,
                          private val changePassword: ChangePassword,
                          private val requestForgottenPasswordRedefinition: RequestForgottenPasswordRedefinition,
                          private val redefineForgottenPassword: RedefineForgottenPassword,
+                         private val refreshData: RefreshData,
                          private val authService: AuthService) {
 
     fun create(customerWeb: CustomerWeb): DefaultWebResponse {
@@ -75,6 +76,27 @@ class CustomerController(private val createAccount: CreateAccount,
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()
         } catch (e: Exception) {
+            e.toResponseModel()
+        }
+    }
+
+    fun refreshData(authToken: String): DefaultWebResponse {
+        if (!authService.isTokenValid(authToken))
+            return DefaultWebResponse(error = DefaultError("Problem in auth", 3, 200, "Invalid credentials"))
+
+        val claimsPackage = authService.toMap(authToken)
+
+        if (claimsPackage.isEmpty)
+            return DefaultWebResponse(error = DefaultError("Problem in auth", 4, 200, "Invalid auth data"))
+
+        val customer = claimsPackage.get().toCustomer()
+
+        return try {
+            refreshData.refresh(customer.id).toResponseModel()
+        } catch (e: DefaultException) {
+            e.data.toDefaultWebError()
+        } catch (e: Exception) {
+            e.printStackTrace()
             e.toResponseModel()
         }
     }
