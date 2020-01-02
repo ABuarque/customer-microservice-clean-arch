@@ -33,6 +33,7 @@ class CustomerResource(@Autowired private val customerController: CustomerContro
         return ResponseEntity(customerController.requestPasswordRedefinitionLink(customer), HttpStatus.OK)
     }
 
+    @CrossOrigin("*")
     @RequestMapping("/reset_password")
     fun redefineForgottenPassword(@RequestBody customer: CustomerWeb): ResponseEntity<Any> {
         return ResponseEntity(customerController.definePasswordByRedefinitionToken(customer), HttpStatus.OK)
