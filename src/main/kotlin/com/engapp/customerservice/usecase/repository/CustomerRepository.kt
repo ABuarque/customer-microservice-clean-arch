@@ -3,6 +3,12 @@ package com.engapp.customerservice.usecase.repository
 import com.engapp.customerservice.domain.Customer
 import java.util.*
 
+/**
+ * CustomerRepository is a blueprint to the
+ * possible queries that might be used for
+ * user domain.
+ *
+ */
 interface CustomerRepository {
 
     fun create(customer: Customer): Customer
