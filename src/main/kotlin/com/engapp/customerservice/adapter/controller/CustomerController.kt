@@ -3,17 +3,15 @@ package com.engapp.customerservice.adapter.controller
 import com.engapp.customerservice.adapter.auth.AuthService
 import com.engapp.customerservice.adapter.controller.model.*
 import com.engapp.customerservice.domain.Customer
-import com.engapp.customerservice.usecase.ChangePassword
-import com.engapp.customerservice.usecase.CreateAccount
-import com.engapp.customerservice.usecase.ForgotPassword
-import com.engapp.customerservice.usecase.LoginWithEmail
+import com.engapp.customerservice.usecase.*
 import com.engapp.customerservice.usecase.exception.DefaultException
 import com.engapp.customerservice.usecase.exception.ExceptionData
 
 class CustomerController(private val createAccount: CreateAccount,
                          private val loginWithEmail: LoginWithEmail,
                          private val changePassword: ChangePassword,
-                         private val forgotPassword: ForgotPassword,
+                         private val requestForgottenPasswordRedefinition: RequestForgottenPasswordRedefinition,
+                         private val redefineForgottenPassword: RedefineForgottenPassword,
                          private val authService: AuthService) {
 
     fun create(customerWeb: CustomerWeb): DefaultWebResponse {
@@ -59,7 +57,7 @@ class CustomerController(private val createAccount: CreateAccount,
 
     fun requestPasswordRedefinitionLink(customerWeb: CustomerWeb): DefaultWebResponse {
         return try {
-            forgotPassword.requestPasswordRedefinitionLink(customerWeb.email)
+            requestForgottenPasswordRedefinition.request(customerWeb.email)
             val responsePayload = HashMap<String, String>()
             responsePayload["message"] = "If there is some user with email ${customerWeb.email} it will receive a message"
             DefaultWebResponse(data = responsePayload)
@@ -72,7 +70,7 @@ class CustomerController(private val createAccount: CreateAccount,
 
     fun definePasswordByRedefinitionToken(customerWeb: CustomerWeb): DefaultWebResponse {
         return try {
-            forgotPassword.redefineForgottenPassword(customerWeb.passwordRedefinitionToken,
+            redefineForgottenPassword.redefine(customerWeb.passwordRedefinitionToken,
                                                                   customerWeb.newPassword).toResponseModel()
         } catch (e: DefaultException) {
             e.data.toDefaultWebError()

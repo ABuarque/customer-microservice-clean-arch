@@ -3,10 +3,7 @@ package com.engapp.customerservice.config
 import com.engapp.customerservice.adapter.notification.NotificationServiceImpl
 import com.engapp.customerservice.adapter.passwordencryption.PasswordEncryptionService
 import com.engapp.customerservice.adapter.repository.FakeCustomerRepository
-import com.engapp.customerservice.usecase.ChangePassword
-import com.engapp.customerservice.usecase.CreateAccount
-import com.engapp.customerservice.usecase.ForgotPassword
-import com.engapp.customerservice.usecase.LoginWithEmail
+import com.engapp.customerservice.usecase.*
 
 class FakeConfigComponent {
 
@@ -26,7 +23,11 @@ class FakeConfigComponent {
         return ChangePassword(fakeCustomerRepository, passwordEncryption)
     }
 
-    fun forgotPassword(): ForgotPassword {
-        return ForgotPassword(fakeCustomerRepository, notificationService, passwordEncryption)
+    fun requestForgottenPasswordRedefinition(): RequestForgottenPasswordRedefinition {
+        return RequestForgottenPasswordRedefinition(fakeCustomerRepository, notificationService)
+    }
+
+    fun redefineForgottenPassword(): RedefineForgottenPassword {
+        return RedefineForgottenPassword(fakeCustomerRepository, passwordEncryption)
     }
 }
